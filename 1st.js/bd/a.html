@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎉 Happy Birthday Card</title>
+  <style>
+    :root{
+      --bg:#0f172a; --panel:#111827; --text:#e5e7eb; --muted:#94a3b8;
+      --accent:#f472b6; --accent2:#22d3ee; --shadow:0 20px 60px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(255,255,255,.06), transparent 60%),
+        radial-gradient(900px 500px at 10% 110%, rgba(255,255,255,.05), transparent 60%),
+        var(--bg);
+      overflow:hidden;
+    }
+    .wrap{position:relative; display:grid; grid-template-columns:360px 1fr; gap:18px; height:100%; padding:16px}
+    .panel{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08); border-radius:18px; padding:16px; box-shadow:var(--shadow);
+      backdrop-filter:blur(6px); overflow:auto; max-height:100%;
+    }
+    h1{margin:0 0 6px; font-size:20px}
+    p.sub{margin:0 0 12px; color:var(--muted); font-size:13px}
+    label{display:block; font-size:12px; color:var(--muted); margin:10px 0 6px}
+    input[type="text"], textarea, select{
+      width:100%; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12);
+      background:rgba(17,24,39,.6); color:var(--text); outline:none;
+    }
+    textarea{resize:vertical; min-height:68px}
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px; cursor:pointer; user-select:none;
+      padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      color:white; font-weight:600; letter-spacing:.2px;
+      transition:transform .06s ease, box-shadow .2s ease, background .2s;
+    }
+    .btn:hover{transform:translateY(-1px); box-shadow:0 8px 28px rgba(0,0,0,.35)}
+    .btn:active{transform:translateY(1px) scale(.99)}
+    .btn.primary{background:linear-gradient(90deg, var(--accent), var(--accent2)); border-color:rgba(255,255,255,.18)}
+    .btn.full{width:100%}
+    .hint{color:var(--muted); font-size:12px; margin:6px 0 0}
+    .stage{
+      position:relative; border-radius:22px; overflow:hidden;
+      background:
+        radial-gradient(1200px 600px at 100% -10%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(900px 500px at -10% 110%, rgba(255,255,255,.07), transparent 60%),
+        linear-gradient(135deg, #0b1022, #0a0f1d);
+      box-shadow:var(--shadow);
+    }
+    .card{position:absolute; inset:0; padding:24px; display:grid; place-items:center; text-align:center}
+    .card-inner{
+      width:min(720px, 92%); border-radius:22px; padding:26px 20px 30px;
+      border:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      backdrop-filter:blur(8px);
+    }
+    .badge{
+      display:inline-block; padding:6px 10px; font-size:12px; border-radius:999px;
+      background:linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.10));
+      border:1px solid rgba(255,255,255,.18); color:white; opacity:.95;
+    }
+    .headline{
+      font-size:clamp(28px, 6vw, 52px); margin:12px 0 4px; font-weight:800; line-height:1.05;
+      background:linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow:0 0 24px rgba(255,255,255,.14);
+    }
+    .to-line{font-size:clamp(16px, 2.5vw, 18px); color:var(--muted)}
+    .message{margin:14px auto 16px; font-size:clamp(15px, 2.4vw, 18px); color:#f3f4f6; max-width:52ch}
+    .sig{margin-top:10px; font-weight:700; font-size:16px}
+    .footer-controls{position:absolute; right:12px; bottom:12px; display:flex; gap:8px; flex-wrap:wrap}
+    .color-pill{--c:var(--accent); width:28px; height:28px; border-radius:999px; border:2px solid rgba(255,255,255,.6); background:linear-gradient(180deg, var(--c), rgba(255,255,255,.2)); cursor:pointer}
+    .sparkles, #confetti{position:absolute; inset:0; pointer-events:none}
+    /* Balloons */
+    .balloon{position:absolute; bottom:-120px; width:40px; height:50px; background:var(--accent); border-radius:50% 50% 45% 55%/55% 45% 55% 45%; opacity:.8; animation:float 8s linear infinite}
+    .balloon:after{content:\"\"; position:absolute; bottom:-10px; left:50%; transform:translateX(-50%); width:2px; height:26px; background:rgba(255,255,255,.5)}
+    @keyframes float{0%{transform:translateY(0) translateX(0)} 100%{transform:translateY(-120vh) translateX(-30px)}}
+    @media (max-width:920px){.wrap{grid-template-columns:1fr}.stage{height:62vh}}
+    @media (min-width:921px){.stage{height:100%}}
+    @media print{.wrap{display:block}.panel{display:none}.stage{height:auto}}
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+
+  <div class="wrap">
+    <aside class="panel" id="controls">
+      <h1>🎂 Birthday Card Builder</h1>
+      <p class="sub">Type your details, pick a theme, then click <b>Celebrate</b>. You can share the URL or print.</p>
+
+      <label for="toName">To (name)</label>
+      <input id="toName" type="text" placeholder="e.g., zain" value="Zain">
+
+      <label for="relation">Relationship (optional)</label>
+      <input id="relation" type="text" placeholder="e.g., best friend, sister, colleague">
+
+      <label for="msg">Message</label>
+      <textarea id="msg">Wishing you a day filled with smiles, surprises, and all the things you love the most!</textarea>
+
+      <div class="row">
+        <div>
+          <label for="fromName">From</label>
+          <input id="fromName" type="text" placeholder="Your name" value="— from C.B.">
+        </div>
+        <div>
+          <label for="accent">Theme color</label>
+          <select id="accent">
+            <option value="#f472b6,#22d3ee" selected>Pink → Cyan</option>
+            <option value="#60a5fa,#a78bfa">Blue → Violet</option>
+            <option value="#34d399,#22d3ee">Green → Cyan</option>
+            <option value="#f59e0b,#ef4444">Amber → Red</option>
+            <option value="#fb7185,#f472b6">Rose → Pink</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Music (optional)</label>
+      <p class="hint">If you add a file named <code>happy.mp3</code> next to this HTML, Play/Pause will work.</p>
+      <div class="row">
+        <button class="btn" id="playBtn">▶️ Play</button>
+        <button class="btn" id="pauseBtn">⏸️ Pause</button>
+      </div>
+
+      <div style="height:8px"></div>
+      <button class="btn primary full" id="celebrateBtn">🎉 Celebrate</button>
+
+      <div class="row" style="margin-top:10px">
+        <button class="btn" id="shareBtn">🔗 Share URL</button>
+        <button class="btn" id="printBtn">🖨️ Print</button>
+      </div>
+
+      <p class="hint">Tip: The Share URL saves the current text & theme in the link.</p>
+    </aside>
+
+    <main class="stage">
+      <div class="card">
+        <div class="card-inner" id="cardInner">
+          <span class="badge" id="badge">HAPPY BIRTHDAY</span>
+          <h2 class="headline" id="headline">Happy Birthday 🎉</h2>
+          <div class="to-line" id="toLine">To Aiman</div>
+          <p class="message" id="message">Wishing you a day filled with smiles, surprises, and all the things you love the most!</p>
+          <div class="sig" id="signature">— from A.Y.</div>
+        </div>
+      </div>
+      <!-- floating balloons (auto created by JS for variety) -->
+    </main>
+  </div>
+
+  <audio id="audio" src="happy.mp3" preload="none"></audio>
+
+  <script>
+    // --- helpers
+    const $ = sel => document.querySelector(sel);
+    const params = new URLSearchParams(location.search);
+
+    const els = {
+      to: $("#toName"), rel: $("#relation"), msg: $("#msg"), from: $("#fromName"),
+      accent: $("#accent"),
+      badge: $("#badge"), headline: $("#headline"), toLine: $("#toLine"),
+      message: $("#message"), signature: $("#signature"), cardInner: $("#cardInner")
+    };
+
+    // restore from URL if present
+    function restoreFromQuery(){
+      const get = k => params.get(k) || "";
+      if(params.size){
+        els.to.value = get("to") || els.to.value;
+        els.rel.value = get("rel");
+        els.msg.value = get("msg") || els.msg.value;
+        els.from.value = get("from") || els.from.value;
+        els.accent.value = get("ac") || els.accent.value;
+        applyTheme(els.accent.value);
+        updatePreview();
+      }
+    }
+
+    function updatePreview(){
+      const to = els.to.value.trim();
+      const rel = els.rel.value.trim();
+      const from = els.from.value.trim();
+      const message = els.msg.value.trim();
+
+      els.toLine.textContent = to ? ("To " + to + (rel ? " — " + rel : "")) : "";
+      els.message.textContent = message || "";
+      els.signature.textContent = from || "";
+
+      if(to){
+        els.headline.textContent = `Happy Birthday 🎉`;
+        els.badge.textContent = "HAPPY BIRTHDAY";
+      }else{
+        els.headline.textContent = `Happy Birthday 🎉`;
+        els.badge.textContent = "HAPPY BIRTHDAY";
+      }
+    }
+
+    function applyTheme(val){
+      const [a, b] = val.split(",");
+      document.documentElement.style.setProperty("--accent", a);
+      document.documentElement.style.setProperty("--accent2", b);
+      // recolor any balloons currently on screen
+      document.querySelectorAll(".balloon").forEach(bal => {
+        bal.style.background = `linear-gradient(180deg, ${a}, ${b})`;
+      });
+    }
+
+    // share URL with state
+    function makeShareURL(){
+      const p = new URLSearchParams();
+      if(els.to.value) p.set("to", els.to.value);
+      if(els.rel.value) p.set("rel", els.rel.value);
+      if(els.msg.value) p.set("msg", els.msg.value);
+      if(els.from.value) p.set("from", els.from.value);
+      p.set("ac", els.accent.value);
+      return location.origin + location.pathname + "?" + p.toString();
+    }
+
+    // --- events
+    ["input","change"].forEach(ev=>{
+      ["#toName","#relation","#msg","#fromName","#accent"].forEach(sel=>{
+        document.querySelector(sel).addEventListener(ev, e=>{
+          if(sel==="#accent") applyTheme(els.accent.value);
+          updatePreview();
+        });
+      });
+    });
+
+    $("#shareBtn").addEventListener("click", async ()=>{
+      const url = makeShareURL();
+      try{
+        await navigator.clipboard.writeText(url);
+        alert("Link copied! Share it with friends:\n\n" + url);
+      }catch(e){
+        prompt("Copy your shareable link:", url);
+      }
+    });
+
+    $("#printBtn").addEventListener("click", ()=>window.print());
+
+    // audio controls
+    const audio = $("#audio");
+    $("#playBtn").addEventListener("click", ()=>{ audio.play().catch(()=>alert("Put happy.mp3 next to index.html to enable music.")); });
+    $("#pauseBtn").addEventListener("click", ()=>audio.pause());
+
+    // celebrate (confetti + balloons)
+    $("#celebrateBtn").addEventListener("click", ()=>{
+      burstConfetti();
+      launchBalloons(10);
+    });
+
+    // --- confetti
+    const cf = document.getElementById("confetti");
+    const ctx = cf.getContext("2d");
+    function resizeCanvas(){
+      cf.width = window.innerWidth;
+      cf.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas); resizeCanvas();
+
+    let confettiPieces = [];
+    function burstConfetti(){
+      const count = 220;
+      const colors = [getComputedStyle(document.documentElement).getPropertyValue("--accent").trim(),
+                      getComputedStyle(document.documentElement).getPropertyValue("--accent2").trim(),
+                      "#ffffff"];
+      for(let i=0;i<count;i++){
+        confettiPieces.push({
+          x: Math.random()*cf.width,
+          y: -20,
+          size: 6+Math.random()*6,
+          angle: Math.random()*360,
+          speedX: -2 + Math.random()*4,
+          speedY: 2 + Math.random()*4,
+          spin: -6 + Math.random()*12,
+          color: colors[i%colors.length],
+          shape: Math.random()<0.5 ? "rect" : "circle",
+          life: 0
+        });
+      }
+    }
+
+    function drawConfetti(){
+      ctx.clearRect(0,0,cf.width,cf.height);
+      confettiPieces = confettiPieces.filter(p => p.y < cf.height + 30);
+      confettiPieces.forEach(p=>{
+        p.x += p.speedX;
+        p.y += p.speedY;
+        p.angle += p.spin;
+        p.life += 1;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle * Math.PI/180);
+        ctx.fillStyle = p.color;
+        if(p.shape==="rect"){
+          ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size/2);
+        }else{
+          ctx.beginPath();
+          ctx.arc(0,0,p.size/2,0,Math.PI*2);
+          ctx.fill();
+        }
+        ctx.restore();
+      });
+      requestAnimationFrame(drawConfetti);
+    }
+    requestAnimationFrame(drawConfetti);
+
+    // --- balloons
+    function launchBalloons(n=8){
+      const stage = document.querySelector(".stage");
+      const [a,b] = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()
+        ? [getComputedStyle(document.documentElement).getPropertyValue("--accent").trim(),
+           getComputedStyle(document.documentElement).getPropertyValue("--accent2").trim()]
+        : ["#f472b6","#22d3ee"];
+      for(let i=0;i<n;i++){
+        const bal = document.createElement("div");
+        bal.className = "balloon";
+        const left = 5 + Math.random()*90;
+        const delay = Math.random()*1.5;
+        const dur = 7 + Math.random()*5;
+        bal.style.left = left + "%";
+        bal.style.animationDuration = dur + "s";
+        bal.style.animationDelay = delay + "s";
+        bal.style.background = `linear-gradient(180deg, ${a}, ${b})`;
+        stage.appendChild(bal);
+        // cleanup after animation
+        setTimeout(()=>bal.remove(), (dur+delay)*1000);
+      }
+    }
+
+    // init
+    restoreFromQuery();
+    updatePreview();
+  </script>
+</body>
+</html>
